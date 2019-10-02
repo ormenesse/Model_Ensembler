@@ -42,7 +42,7 @@ def show_simple_models_thresholds(df,coluna_eixo_y,ratings_eixo_y,coluna_eixo_x,
         sum_pop = np.sum(final.values[:j,1])/np.sum(final.values[:,1])
         limiar = indices[j-1]
         data.append([limiar, bad_total, sum_pop])
-    resultados = pd.DataFrame(data,columns=['LimiarMax','BAD(%)','POP(%)'])
+    resultados = pd.DataFrame(data,columns=['LimiarMax','TARGET(%)','POP(%)'])
 
     final2 = pd.concat([\
     df[[coluna_eixo_x,VAR_BAD]].groupby([coluna_eixo_x],as_index=False).sum(),
@@ -59,7 +59,7 @@ def show_simple_models_thresholds(df,coluna_eixo_y,ratings_eixo_y,coluna_eixo_x,
         sum_pop = np.sum(final2.values[:j,1])/np.sum(final2.values[:,1])
         limiar = indices[j-1]
         data.append([limiar, bad_total, sum_pop])
-    resultados2 = pd.DataFrame(data,columns=['LimiarMax','BAD(%)','POP(%)'])
+    resultados2 = pd.DataFrame(data,columns=['MaxThresh','TARGET(%)','POP(%)'])
 
     display_side_by_side(resultados,resultados2)
     
@@ -101,16 +101,16 @@ def generate_thresholds(matrizbadfinal, matrizpop, Bad_Rate):
             limiar = str(indices[i-1])+' '+str(colunas[j-1])
             data.append([limiar, bad_total, sum_pop,i,j])
             
-    resultados = pd.DataFrame(data,columns=['Limiar_Seguerido','BAD(%)','POP(%)','index','columns'])
-    display(resultados[['Limiar_Seguerido','BAD(%)','POP(%)']][(resultados['BAD(%)'] < Bad_Rate/100)].sort_values(by='BAD(%)',ascending=False).head())
+    resultados = pd.DataFrame(data,columns=['Suggested threshold','TARGET(%)','POP(%)','index','columns'])
+    display(resultados[['Suggested threshold','TARGET(%)','POP(%)']][(resultados['TARGET(%)'] < Bad_Rate/100)].sort_values(by='TARGET(%)',ascending=False).head())
     #Ploting
     plt.figure(figsize=(10,6))
-    plt.title('Diagrama Bad X População')
-    plt.scatter(resultados['BAD(%)']*100,resultados['POP(%)']*100)
-    plt.xlabel('Inadimplência (%)')
-    plt.ylabel('População (%)')
+    plt.title('TARGET X Population')
+    plt.scatter(resultados['TARGET(%)']*100,resultados['POP(%)']*100)
+    plt.xlabel('TARGET (%)')
+    plt.ylabel('Population (%)')
     plt.show()
-    return resultados[(resultados['BAD(%)'] < Bad_Rate/100)].sort_values(by='BAD(%)',ascending=False).reset_index(drop=True)
+    return resultados[(resultados['TARGET(%)'] < Bad_Rate/100)].sort_values(by='TARGET(%)',ascending=False).reset_index(drop=True)
     
 def create_grid(matrizbadfinal,resultados):
     grid = widgets.GridspecLayout(matrizbadfinal.shape[0]+1, matrizbadfinal.shape[1]+1,max_width=5)
