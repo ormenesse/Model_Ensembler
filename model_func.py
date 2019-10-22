@@ -1,3 +1,10 @@
+__author__ = "Vinicius Ormenesse"
+__license__ = "GPL"
+__version__ = "1.0.1"
+__maintainer__ = "Vinicius Ormenesse"
+__email__ = "vinicius.ormenesse@gmail.com"
+__status__ = "Done"
+
 from IPython.core.display import display, HTML,display_html
 import ipywidgets as widgets
 import numpy as np
